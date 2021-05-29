@@ -27,7 +27,7 @@ declare function initAsync(jsonSchema: Record<string, any>, options?: ajvValidat
  * Middleware that validates the request against the swagger
  * file, according to the request method and route
  */
-declare function validate(ctx: Record<string, any>, next: Function): void; // koa
+declare function validate(ctx: Record<string, any>, next: Function): Promise<void>; // koa
 declare function validate(req: Record<string, any>, res: Record<string, any>, next: Function): void; // express
 declare function validate(options: FastifyPluginOptions): any; // fastify
 
