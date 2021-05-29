@@ -62,7 +62,7 @@
   "author": "Idan Tovi",
   "license": "Apache-2.0",
   "dependencies": {
-    "api-schema-builder": "^2.0.5",
+    "api-schema-builder": "github:srax47/api-schema-builder#master",
     "auto-bind": "^4.0.0",
     "nano-memoize": "^1.2.1"
   },
