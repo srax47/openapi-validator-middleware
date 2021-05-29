@@ -68,6 +68,7 @@ export interface ajvValidatorOptions {
     formats?: Array<format>;
     keywords?: any;
     makeOptionalAttributesNullable?: boolean;
+    skipOAIValidation?: boolean
 }
 
 export interface inputValidationOptions {
