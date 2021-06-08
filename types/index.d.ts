@@ -45,7 +45,7 @@ export interface ErrorDetails {
     schemaPath: string;
 }
 
-export type frameworks = 'koa' | 'express' | 'fastify';
+export type frameworks = 'koa' | 'express' | 'fastify' | 'lambda';
 
 export interface format {
     name: string;
@@ -54,6 +54,14 @@ export interface format {
 
 export interface FastifyPluginOptions {
     skiplist?: Array<string>;
+}
+
+export interface LambdaOptions {
+    httpMethod: 'get' | 'put' | 'post' | 'delete'
+    query?: Record<string, unknown>
+    body?: Record<string, unknown>
+    params?: Record<string, unknown>
+    headers?: Record<string, string>
 }
 
 export interface ajvValidatorOptions {
@@ -86,6 +94,7 @@ declare class MiddlewareClass {
     // eslint-disable-next-line no-dupe-class-members
     initAsync(jsonSchema: Record<string, any>, options?: ajvValidatorOptions): Promise<void>;
 
+    validate(ctx: LambdaOptions): void; // lambda
     validate(ctx: Record<string, any>, next: Function): void; // koa
     // eslint-disable-next-line no-dupe-class-members
     validate(req: Record<string, any>, res: Record<string, any>, next: Function): void; // express
