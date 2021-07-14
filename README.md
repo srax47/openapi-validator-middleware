@@ -7,9 +7,9 @@
 [![Known Vulnerabilities][snyk-image]][snyk-url]
 [![Apache 2.0 License][license-image]][license-url]
 
-This package provides data validation within an Express, Koa or Fastify app according to a [Swagger/OpenAPI definition](https://swagger.io/specification/). It uses [Ajv](https://www.npmjs.com/package/ajv) under the hood for validation.
+This package provides data validation within an Express, Koa app according to a [Swagger/OpenAPI definition](https://swagger.io/specification/). It uses [Ajv](https://www.npmjs.com/package/ajv) under the hood for validation.
 
-NOTICE: As this package gone through a long way, as we added support for OpenAPI definitions, while also adding support for more frameworks such as Koa and Fastify, we finally took the step of changing [express-ajv-swagger-validation](https://www.npmjs.com/package/express-ajv-swagger-validation) name to something that describes it better. As of now we'll be using the name [openapi-validator-middleware](https://www.npmjs.com/package/openapi-validator-middleware) instead.  
+NOTICE: As this package gone through a long way, as we added support for OpenAPI definitions, while also adding support for more frameworks such as Koa, we finally took the step of changing [express-ajv-swagger-validation](https://www.npmjs.com/package/express-ajv-swagger-validation) name to something that describes it better. As of now we'll be using the name [openapi-validator-middleware](https://www.npmjs.com/package/openapi-validator-middleware) instead.  
 There are no code changes in `openapi-validator-middleware@2.0.0` compared to `express-ajv-swagger-validation@1.2.0` apart from the name change.
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
@@ -19,20 +19,16 @@ There are no code changes in `openapi-validator-middleware@2.0.0` compared to `e
 - [openapi-validator-middleware](#openapi-validator-middleware)
   - [Installation](#installation)
   - [API](#api)
-    - [openapi-validator-middleware.validate(fastifyOptions)](#openapi-validator-middlewarevalidatefastifyoptions)
-      - [fastifyOptions](#fastifyoptions)
     - [openapi-validator-middleware.init(pathToSwaggerFile, options)](#openapi-validator-middlewareinitpathtoswaggerfile-options)
     - [openapi-validator-middleware.initAsync(pathToSwaggerFile, options)](#openapi-validator-middlewareinitasyncpathtoswaggerfile-options)
       - [Options](#options)
   - [Usage Example](#usage-example)
     - [Express](#express)
     - [Koa](#koa)
-    - [Fastify](#fastify)
     - [Multiple-instances](#multiple-instances)
   - [Important Notes](#important-notes)
     - [Schema Objects](#schema-objects)
     - [Multipart/form-data (files)](#multipartform-data-files)
-    - [Fastify support](#fastify-support)
     - [Koa support](#koa-support)
     - [Koa packages](#koa-packages)
   - [Known Issues with OpenAPI 3](#known-issues-with-openapi-3)
@@ -56,16 +52,6 @@ const swaggerValidation = require('openapi-validator-middleware');
 
 ## API
 
-### openapi-validator-middleware.validate(fastifyOptions)
-
-This middleware function validates the request body, headers, path parameters and query parameters according to the _paths_ definition of the swagger file. Make sure to use this middleware inside a route definition in order to have `req.route.path` assigned to the most accurate express route.
-
-- `fastifyOptions`: Only applicable for `fastify` framework. See below.
-
-#### fastifyOptions
-
-- `skiplist`: Endpoint paths for which validation should not be applied. An array of strings in RegExp format, e. g. `['^/pets$']` 
-
 ### openapi-validator-middleware.init(pathToSwaggerFile, options)
 
 Initialize the middleware using a swagger definition.
@@ -87,7 +73,7 @@ This Initilaztion function also supports schema with references to external file
 #### Options
 
 Options currently supported:
-- `framework` - Defines in which framework the middleware is working ('fastify', 'koa' or 'express'). As default, set to 'express'.
+- `framework` - Defines in which framework the middleware is working ('koa' or 'express'). As default, set to 'express'.
 - `formats` - Array of formats that can be added to `ajv` configuration, each element in the array should include `name` and `pattern`.
     ```js
     formats: [
@@ -174,39 +160,6 @@ router.put('/pets', inputValidation.validate, async (ctx, next) => {
 return app;
 ```
 
-### Fastify
-```js
-'use strict';
-const fastify = require('fastify');
-const inputValidation = require('../../src/middleware');
-
-async function getApp() {
-    inputValidation.init('test/pet-store-swagger.yaml', { 
-        framework: 'fastify'
-    });
-    const app = fastify({ logger: true });
-
-    app.register(inputValidation.validate({
-      skiplist: ['^/_metrics$']
-    }));
-    app.setErrorHandler(async (err, req, reply) => {
-        if (err instanceof inputValidation.InputValidationError) {
-             return reply.status(400).send({ more_info: JSON.stringify(err.errors) });
-        }
-
-        reply.status(500);
-        reply.send();
-    });
-
-    app.get('/pets', (req, reply) => {
-        reply.status(204).send();
-    });
-
-    await app.ready();
-    return app;
-}
-```
-
 ### multiple-instances
 ```js
 const inputValidation = require('../../src/middleware');
@@ -231,11 +184,6 @@ It is important to set the `type` property of any [Schema Objects](https://githu
 ### Multipart/form-data (files) 
 
 Multipart/form-data (files) support is based on [`express/multer`](https://github.com/expressjs/multer).
-
-### Fastify support
-
-Fastify support requires `uri-js` dependency to be available.
-When using this package as middleware for fastify, the validations errors are being thrown.
 
 ### Koa support
 

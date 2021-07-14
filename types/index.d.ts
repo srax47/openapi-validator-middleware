@@ -30,7 +30,6 @@ declare function initAsync(jsonSchema: Record<string, any>, options?: ajvValidat
 declare function validate(ctx: LambdaOptions): Promise<void>; // lambda
 declare function validate(ctx: Record<string, any>, next: Function): Promise<void>; // koa
 declare function validate(req: Record<string, any>, res: Record<string, any>, next: Function): void; // express
-declare function validate(options: FastifyPluginOptions): any; // fastify
 
 export class InputValidationError extends Error {
     errors: Array<ErrorDetails | string>;
@@ -46,15 +45,11 @@ export interface ErrorDetails {
     schemaPath: string;
 }
 
-export type frameworks = 'koa' | 'express' | 'fastify' | 'lambda';
+export type frameworks = 'koa' | 'express' | 'lambda';
 
 export interface format {
     name: string;
     pattern: RegExp | string;
-}
-
-export interface FastifyPluginOptions {
-    skiplist?: Array<string>;
 }
 
 export interface LambdaOptions {
@@ -86,6 +81,7 @@ export interface inputValidationOptions {
     firstError?: boolean;
 }
 
+// eslint-disable-next-line no-unused-vars
 declare class MiddlewareClass {
     InputValidationError: InputValidationError;
 
@@ -97,11 +93,10 @@ declare class MiddlewareClass {
     initAsync(jsonSchema: Record<string, any>, options?: ajvValidatorOptions): Promise<void>;
 
     validate(ctx: LambdaOptions): void; // lambda
+    // eslint-disable-next-line no-dupe-class-members
     validate(ctx: Record<string, any>, next: Function): void; // koa
     // eslint-disable-next-line no-dupe-class-members
     validate(req: Record<string, any>, res: Record<string, any>, next: Function): void; // express
-    // eslint-disable-next-line no-dupe-class-members
-    validate(options: FastifyPluginOptions): any; // fastify
 }
 
 declare function getNewMiddleware(schemaPath: string, options?: ajvValidatorOptions): MiddlewareClass;

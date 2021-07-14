@@ -52,7 +52,6 @@
     "validation",
     "validator",
     "koa",
-    "fastify",
     "middleware"
   ],
   "bugs": {
@@ -84,8 +83,6 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
     "express": "^4.17.1",
-    "fastify": "^3.8.0",
-    "fastify-plugin": "^3.0.0",
     "koa": "^2.13.0",
     "koa-bodyparser": "^4.3.0",
     "koa-multer": "^1.0.2",
@@ -98,16 +95,7 @@
     "sinon": "^9.2.4",
     "sinon-chai": "^3.5.0",
     "supertest": "^4.0.2",
-    "typescript": "4.0.5",
-    "uri-js": "^4.4.0"
-  },
-  "peerDependencies": {
-    "uri-js": "^4.2.2"
-  },
-  "peerDependenciesMeta": {
-    "uri-js": {
-      "optional": true
-    }
+    "typescript": "4.0.5"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
