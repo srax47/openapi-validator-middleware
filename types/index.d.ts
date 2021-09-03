@@ -74,6 +74,7 @@ export interface ajvValidatorOptions {
     makeOptionalAttributesNullable?: boolean;
     skipOAIValidation?: boolean
     dereferenced?: boolean
+    allowQueryAdditionalProperties?: boolean
 }
 
 export interface inputValidationOptions {
